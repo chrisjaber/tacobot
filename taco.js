@@ -19,6 +19,10 @@ const init = () => {
   if (!DB.exists()) populate();
 };
 
+const update = () => {
+    populate();
+};
+
 const formatUsers = users => {
   const members = users.members;
   return members.map(member => ({
@@ -63,6 +67,7 @@ const resetLeft = () => {
 
 module.exports = {
   init,
+  update,
   writeMembers,
   giveTaco,
   removeLeft,

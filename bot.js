@@ -32,7 +32,7 @@ const forTaco = controller => {
             message,
             `Sorry <@${message.user}>, you only have ${
               giver.left
-            } tacos remaning.. And you tried to give *${tacosGiven}*`
+            } tacos remaning and you tried to give *${tacosGiven}*`
           );
         }
       }
@@ -50,7 +50,7 @@ const forScore = controller => {
       const firsts = ranked.slice(0, 5).filter(u => u.tacos > 0);
       const sentences = firsts.map(
         (user, index) =>
-          `<@${user.id}> is n°${index + 1} with *${user.tacos}* tacos`
+          `<@${user.id}> is number ${index + 1} with *${user.tacos}* tacos`
       );
       bot.reply(message, sentences.join("\n"));
     }

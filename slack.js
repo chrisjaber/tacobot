@@ -4,7 +4,6 @@ const axios = require("axios");
 const getAllUsers = () => {
   return axios
     .get("https://slack.com/api/users.list", {
-      params: { limit: 100 },
       headers: {
         Authorization: `Bearer ${config.token}`,
         "Content-type": "application/x-www-form-urlencoded",

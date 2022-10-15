@@ -28,6 +28,6 @@ controller.on("rtm_close", function (_bot, _err) {
 
 startRTM();
 
-schedule.scheduleJob({ hour: 00, minute: 00 }, () => {
+schedule.scheduleJob({ hour: 07, minute: 00 }, () => {
   taco.resetLeft();
 });

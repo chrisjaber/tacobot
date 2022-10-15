@@ -15,24 +15,30 @@ const forTaco = controller => {
         if (giver.left >= tacosGiven) {
           taco.giveTaco(userIndex, tacosGiven);
           taco.removeLeft(senderIndex, tacosGiven);
-          bot.api.reactions.add(
-            {
-              timestamp: message.ts,
-              channel: message.channel,
-              name: "taco"
-            },
-            function(err, res) {
-              if (err) {
-                bot.botkit.log("Failed to add emoji reaction :(", err);
-              }
-            }
-          );
+          const senderName = DB.getUsername(senderIndex)
+          const receiverName = DB.getUsername(userIndex)
+          console.log(`${senderName} gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to ${receiverName}`)
+          let msg = `You just received ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} from <@${senderName}>!`
+          bot.say({text: msg, channel:ids[userIndex]})
+          // bot.say(`You just received ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} from ${senderName}!`)
+          // bot.api.reactions.add(
+          //   {
+          //     timestamp: message.ts,
+          //     channel: message.channel,
+          //     name: "taco"
+          //   },
+          //   function(err, res) {
+          //     if (err) {
+          //       bot.botkit.log("Failed to add emoji reaction :(", err);
+          //     }
+          //   }
+          // );
         } else {
           bot.reply(
             message,
             `Sorry <@${message.user}>, you only have ${
               giver.left
-            } tacos remaning and you tried to give *${tacosGiven}*`
+            } taco${giver.left === 1 ? '': 's'} remaning and you tried to give *${tacosGiven}*`
           );
         }
       }

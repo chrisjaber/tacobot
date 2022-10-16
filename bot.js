@@ -56,7 +56,7 @@ const forScore = controller => {
       const firsts = ranked.slice(0, 5).filter(u => u.tacos > 0);
       const sentences = firsts.map(
         (user, index) =>
-          `<@${user.id}> is number ${index + 1} with *${user.tacos}* tacos`
+          `<@${user.id}> is number ${index + 1} with *${user.tacos}* taco${user.tacos === 1 ? '': 's'}`
       );
       bot.reply(message, sentences.join("\n"));
     }
@@ -71,7 +71,7 @@ const forLeft = controller => {
       const ids = DB.getIDs();
       const userIndex = ids.indexOf(message.user);
       const user = DB.getUser(userIndex);
-      bot.reply(message, `You have ${user.left} tacos left for today`);
+      bot.reply(message, `You have ${user.left} taco${user.left === 1 ? '': 's'} left for today`);
     }
   );
 };

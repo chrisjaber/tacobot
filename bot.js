@@ -22,6 +22,8 @@ const forTaco = controller => {
           console.log(`${senderName} gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to ${receiverName}`)
           let msg = `You just received ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} from <@${senderName}>!`
           bot.say({text: msg, channel:ids[userIndex]})
+          let senderMsg = `You just gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to <@${senderName}>!`
+          bot.say({text: senderMsg, channel:ids[senderIndex]})
           // bot.say(`You just received ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} from ${senderName}!`)
           // bot.api.reactions.add(
           //   {
@@ -71,6 +73,8 @@ const forReaction = controller => {
         console.log(`${senderName} gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to ${receiverName}`)
         let msg = `You just received ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} from <@${senderName}>!`
         bot.say({text: msg, channel:ids[userIndex]})
+        let senderMsg = `You just gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to <@${senderName}>!`
+        bot.say({text: senderMsg, channel:ids[senderIndex]})
       } else {
         let msg = `Sorry <@${user}>, you only have ${
           giver.left

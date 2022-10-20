@@ -1,6 +1,7 @@
 const parser = require("./parser.js");
 const taco = require("./taco.js");
 const DB = require("./db.js");
+const config = require("./config.js");
 
 const forTaco = controller => {
   controller.hears(":taco:", "ambient", (bot, message) => {
@@ -10,9 +11,10 @@ const forTaco = controller => {
       const userIndex = ids.indexOf(id);
       const senderIndex = ids.indexOf(message.user);
       const tacosGiven = parser.countTacos(message.text);
-      if (userIndex > -1 && userIndex !== senderIndex) {
+      const kingBurrito = message.user === config.kingBurritoId;
+      if ((userIndex > -1 && userIndex !== senderIndex) || kingBurrito) {
         const giver = DB.getUser(senderIndex);
-        if (giver.left >= tacosGiven) {
+        if (giver.left >= tacosGiven || kingBurrito) {
           taco.giveTaco(userIndex, tacosGiven);
           taco.removeLeft(senderIndex, tacosGiven);
           const senderName = DB.getUsername(senderIndex)
@@ -45,6 +47,40 @@ const forTaco = controller => {
     }
   });
 };
+
+const forReaction = controller => {
+  controller.on('reaction_added', function(bot, event) {
+    let isTaco = event.reaction == 'taco'
+    if (!isTaco) return;
+
+    const user = event.user // message reactor
+    const sender = event.item_user // message sender
+
+    const ids = DB.getIDs();
+    const userIndex = ids.indexOf(sender);
+    const senderIndex = ids.indexOf(user);
+    const tacosGiven = 1;
+    const kingBurrito = user === config.kingBurritoId;
+    if ((userIndex > -1 && userIndex !== senderIndex) || kingBurrito) {
+      const giver = DB.getUser(senderIndex);
+      if (giver.left >= tacosGiven || kingBurrito) {
+        taco.giveTaco(userIndex, tacosGiven);
+        taco.removeLeft(senderIndex, tacosGiven);
+        const senderName = DB.getUsername(senderIndex)
+        const receiverName = DB.getUsername(userIndex)
+        console.log(`${senderName} gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to ${receiverName}`)
+        let msg = `You just received ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} from <@${senderName}>!`
+        bot.say({text: msg, channel:ids[userIndex]})
+      } else {
+        let msg = `Sorry <@${user}>, you only have ${
+          giver.left
+        } taco${giver.left === 1 ? '': 's'} remaning and you tried to give *${tacosGiven}*`
+        bot.say({text: msg, channel:ids[userIndex]})
+      }
+    }
+  })
+  
+}
 
 const forScore = controller => {
   controller.hears(
@@ -97,6 +133,7 @@ If you want to know the ranking, ask me \`score\` or \`ranking\`
 
 const listens = controller => {
   forTaco(controller);
+  forReaction(controller);
   forScore(controller);
   forLeft(controller);
   forHelp(controller);

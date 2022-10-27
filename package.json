@@ -15,8 +15,8 @@
     "start": "NODE_ENV=development nodemon index.js",
     "test-bot": "node bot.test.js",
     "test-slack": "node slack.test.js",
-    "test-taco": "NODE_ENV=development nodemon taco.test.js",
-    "update-users": "NODE_ENV=development node taco.update.js"
+    "test-taco": "node taco.test.js",
+    "update-users": "node taco.update.js"
   },
   "nodemonConfig": {
     "ignore": [

@@ -24,7 +24,7 @@ const update = () => {
 };
 
 const formatUsers = users => {
-  const members = users.members;
+  const members = users.members.filter(user=>!user.deleted);
   return members.map(member => ({
     id: member.id,
     name: member.name

@@ -105,7 +105,7 @@ const forScore = controller => {
 
 const forLeft = controller => {
   controller.hears(
-    ["left", "combien", "how much", "how many"],
+    ["left", "how much", "how many"],
     "direct_message",
     (bot, message) => {
       const ids = DB.getIDs();
@@ -118,17 +118,17 @@ const forLeft = controller => {
 
 const forHelp = controller => {
   controller.hears(
-    ["help", "aide", "commandes", "commande"],
+    ["help"],
     ["direct_message", "direct_mention"],
     (bot, message) => {
       bot.reply(
         message,
         `
-     In public channels, just ping someone and add the :taco: emoji next to his name.
-You can ask me how many :taco: you have left but in direct message:
-Just ask me \`left\` (or \`how many\`; \`how much\`)
+In the <#C0FQWQXNY> channel, just mention someone and add the :taco: emoji next to their name. You can also react to a message with the :taco: emoji to give the sender a taco.
 
-If you want to know the ranking, ask me \`score\` or \`ranking\`
+You can find out how many :taco: you have left by direct messaging me \`left\` or \`how many\`.
+
+If you want to see the leaderboard, ask me \`score\` or \`ranking\`
     `
       );
     }

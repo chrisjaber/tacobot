@@ -93,7 +93,7 @@ const forScore = controller => {
     (bot, message) => {
       const users = DB.getUsers();
       const ranked = users.sort((a, b) => b.tacos - a.tacos);
-      const firsts = ranked.slice(0, 5).filter(u => u.tacos > 0);
+      const firsts = ranked.slice(0, 10).filter(u => u.tacos > 0);
       const sentences = firsts.map(
         (user, index) =>
           `<@${user.id}> is number ${index + 1} with *${user.tacos}* taco${user.tacos === 1 ? '': 's'}`

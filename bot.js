@@ -38,12 +38,9 @@ const forTaco = controller => {
           //   }
           // );
         } else {
-          bot.reply(
-            message,
-            `Sorry <@${message.user}>, you only have ${
-              giver.left
-            } taco${giver.left === 1 ? '': 's'} remaning and you tried to give *${tacosGiven}*`
-          );
+          console.log(`${senderName} tried to give ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to ${receiverName}, but only had ${giver.left}`)
+          let noTacoMsg = `Sorry <@${message.user}>, you only have ${giver.left} taco${giver.left === 1 ? '': 's'} remaning and you tried to give *${tacosGiven}*`
+          bot.say({text: noTacoMsg, channel:ids[senderIndex]})
         }
       }
     }

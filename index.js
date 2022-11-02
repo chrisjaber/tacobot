@@ -23,7 +23,7 @@ const startRTM = () => {
 };
 
 controller.on("rtm_close", function (_bot, _err) {
-  startRTM();
+  process.exit();
 });
 
 startRTM();

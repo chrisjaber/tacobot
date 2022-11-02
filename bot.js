@@ -12,9 +12,9 @@ const forTaco = controller => {
       const senderIndex = ids.indexOf(message.user);
       const tacosGiven = parser.countTacos(message.text);
       const kingBurrito = message.user === config.kingBurritoId;
-      if ((userIndex > -1 && userIndex !== senderIndex) || kingBurrito) {
+      if ((userIndex > -1 && userIndex !== senderIndex)) {
         const giver = DB.getUser(senderIndex);
-        if (giver.left >= tacosGiven || kingBurrito) {
+        if (giver.left >= tacosGiven) {
           taco.giveTaco(userIndex, tacosGiven);
           taco.removeLeft(senderIndex, tacosGiven);
           const senderName = DB.getUsername(senderIndex)
@@ -52,17 +52,17 @@ const forReaction = controller => {
     let isTaco = event.reaction == 'taco'
     if (!isTaco) return;
 
-    const user = event.user // message reactor
-    const sender = event.item_user // message sender
+    const sender = event.user // message reactor
+    const user = event.item_user // message sender
 
     const ids = DB.getIDs();
-    const userIndex = ids.indexOf(sender);
-    const senderIndex = ids.indexOf(user);
+    const userIndex = ids.indexOf(user);
+    const senderIndex = ids.indexOf(sender);
     const tacosGiven = 1;
     const kingBurrito = user === config.kingBurritoId;
-    if ((userIndex > -1 && userIndex !== senderIndex) || kingBurrito) {
+    if ((userIndex > -1 && userIndex !== senderIndex)) {
       const giver = DB.getUser(senderIndex);
-      if (giver.left >= tacosGiven || kingBurrito) {
+      if (giver.left >= tacosGiven) {
         taco.giveTaco(userIndex, tacosGiven);
         taco.removeLeft(senderIndex, tacosGiven);
         const senderName = DB.getUsername(senderIndex)
@@ -73,10 +73,10 @@ const forReaction = controller => {
         let senderMsg = `You just gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to <@${receiverName}>!`
         bot.say({text: senderMsg, channel:ids[senderIndex]})
       } else {
-        let msg = `Sorry <@${user}>, you only have ${
+        let msg = `Sorry <@${sender}>, you only have ${
           giver.left
         } taco${giver.left === 1 ? '': 's'} remaning and you tried to give *${tacosGiven}*`
-        bot.say({text: msg, channel:ids[userIndex]})
+        bot.say({text: msg, channel:ids[senderIndex]})
       }
     }
   })

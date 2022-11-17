@@ -6,6 +6,7 @@ const config = require("./config.js");
 const forTaco = controller => {
   controller.hears(":taco:", "ambient", (bot, message) => {
     const id = parser.findID(message.text);
+    const dateStr = new Date().toISOString().slice(0,-5)
     if (id !== null) {
       const ids = DB.getIDs();
       const userIndex = ids.indexOf(id);
@@ -19,7 +20,7 @@ const forTaco = controller => {
           taco.removeLeft(senderIndex, tacosGiven);
           const senderName = DB.getUsername(senderIndex)
           const receiverName = DB.getUsername(userIndex)
-          console.log(`${senderName} gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to ${receiverName}`)
+          console.log(`${dateStr}: ${senderName} gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to ${receiverName}`)
           let msg = `You just received ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} from <@${senderName}>!`
           bot.say({text: msg, channel:ids[userIndex]})
           let senderMsg = `You just gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to <@${receiverName}>!`
@@ -38,7 +39,7 @@ const forTaco = controller => {
           //   }
           // );
         } else {
-          console.log(`${senderName} tried to give ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to ${receiverName}, but only had ${giver.left}`)
+          console.log(`${dateStr}: ${senderName} tried to give ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to ${receiverName}, but only had ${giver.left}`)
           let noTacoMsg = `Sorry <@${message.user}>, you only have ${giver.left} taco${giver.left === 1 ? '': 's'} remaning and you tried to give *${tacosGiven}*`
           bot.say({text: noTacoMsg, channel:ids[senderIndex]})
         }
@@ -52,6 +53,7 @@ const forReaction = controller => {
     let isTaco = event.reaction == 'taco'
     if (!isTaco) return;
 
+    const dateStr = new Date().toISOString().slice(0,-5)
     const sender = event.user // message reactor
     const user = event.item_user // message sender
 
@@ -67,7 +69,7 @@ const forReaction = controller => {
         taco.removeLeft(senderIndex, tacosGiven);
         const senderName = DB.getUsername(senderIndex)
         const receiverName = DB.getUsername(userIndex)
-        console.log(`${senderName} gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to ${receiverName}`)
+        console.log(`${dateStr}: ${senderName} gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to ${receiverName}`)
         let msg = `You just received ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} from <@${senderName}>!`
         bot.say({text: msg, channel:ids[userIndex]})
         let senderMsg = `You just gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to <@${receiverName}>!`

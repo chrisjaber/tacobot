@@ -16,6 +16,10 @@ const forTaco = controller => {
       if ((userIndex > -1 && userIndex !== senderIndex)) {
         const giver = DB.getUser(senderIndex);
         if (giver.left >= tacosGiven) {
+          // if (config.bannedUsers.includes(id)) {
+          //   bot.say({text: `Sorry, <@${id}> has been placed under administrative review and is therefore no longer eligible to receive tacos.`, channel:ids[senderIndex]})
+          //   return
+          // }
           taco.giveTaco(userIndex, tacosGiven);
           taco.removeLeft(senderIndex, tacosGiven);
           const senderName = DB.getUsername(senderIndex)
@@ -23,8 +27,10 @@ const forTaco = controller => {
           console.log(`${dateStr}: ${senderName} gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to ${receiverName}`)
           let msg = `You just received ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} from <@${senderName}>!`
           bot.say({text: msg, channel:ids[userIndex]})
-          let senderMsg = `You just gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to <@${receiverName}>!`
-          bot.say({text: senderMsg, channel:ids[senderIndex]})
+          if (!config.silencedUsers.includes(ids[senderIndex])){
+            let senderMsg = `You just gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to <@${receiverName}>!`
+            bot.say({text: senderMsg, channel:ids[senderIndex]})
+          }
           // bot.say(`You just received ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} from ${senderName}!`)
           // bot.api.reactions.add(
           //   {
@@ -65,6 +71,10 @@ const forReaction = controller => {
     if ((userIndex > -1 && userIndex !== senderIndex)) {
       const giver = DB.getUser(senderIndex);
       if (giver.left >= tacosGiven) {
+        // if (config.bannedUsers.includes(id)) {
+        //   bot.say({text: `Sorry, <@${id}> has been placed under administrative review and is therefore no longer eligible to receive tacos.`, channel:ids[senderIndex]})
+        //   return
+        // }
         taco.giveTaco(userIndex, tacosGiven);
         taco.removeLeft(senderIndex, tacosGiven);
         const senderName = DB.getUsername(senderIndex)
@@ -72,8 +82,10 @@ const forReaction = controller => {
         console.log(`${dateStr}: ${senderName} gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to ${receiverName}`)
         let msg = `You just received ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} from <@${senderName}>!`
         bot.say({text: msg, channel:ids[userIndex]})
-        let senderMsg = `You just gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to <@${receiverName}>!`
-        bot.say({text: senderMsg, channel:ids[senderIndex]})
+        if (!config.silencedUsers.includes(sender)){
+          let senderMsg = `You just gave ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} to <@${receiverName}>!`
+          bot.say({text: senderMsg, channel:ids[senderIndex]})
+          }
       } else {
         let msg = `Sorry <@${sender}>, you only have ${
           giver.left

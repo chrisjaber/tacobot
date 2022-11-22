@@ -40,7 +40,7 @@ const writeMembers = APIMembers => {
   const formattedDBUsers = APIMembers.map(APIMember => {
     const DBUser = DBUsers.find(dbu => dbu.id === APIMember.id);
     if (DBUser !== undefined) return updateUserName(DBUser, APIMember);
-    else return { ...APIMember, tacos: 0, left: 5 };
+    else return { ...APIMember, tacos: 0, left: 5, given: 0 };
   });
   DB.saveUsers(formattedDBUsers);
 };
@@ -55,7 +55,7 @@ const giveTaco = (index, amount = 1) => {
 const removeLeft = (index, amount = 1) => {
   const DBUsers = DB.getUsers();
   const user = DBUsers[index];
-  DBUsers[index] = { ...user, left: user.left - amount };
+  DBUsers[index] = { ...user, left: user.left - amount, given: user.given + amount };
   DB.saveUsers(DBUsers);
 };
 

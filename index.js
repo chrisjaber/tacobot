@@ -15,7 +15,8 @@ const startRTM = () => {
       console.log(err);
       return setTimeout(startRTM, 60000);
     } else {
-      console.log("Ready to taco !");
+      const dateStr = new Date().toISOString().slice(0,-5)
+      console.log(dateStr,"Ready to taco !");
       taco.init();
       tacobot.listens(controller);
     }

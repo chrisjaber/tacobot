@@ -25,6 +25,7 @@ const forTaco = controller => {
           taco.removeLeft(senderIndex, (tacobell ? 5 : tacosGiven));
           const senderName = DB.getUsername(senderIndex);
           const receiverName = DB.getUsername(userIndex);
+          if (!senderName || !receiverName) return;
           console.log(`${dateStr}: ${senderName} gave ${tacosGiven} taco${tacosGiven === 1 ? "" : "s"} to ${receiverName}`);
           let msg = `You just received ${tacosGiven} taco${tacosGiven === 1 ? "" : "s"} from <@${senderName}>!`;
           bot.say({ text: msg, channel: ids[userIndex] });

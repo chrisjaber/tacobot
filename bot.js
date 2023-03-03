@@ -13,6 +13,7 @@ const forTaco = controller => {
       const senderIndex = ids.indexOf(message.user);
       const tacobell = message.text.includes(":tacobell:");
       const tacosGiven = tacobell ? 12 : parser.countTacos(message.text);
+      const tacoMsg = tacobell ? "a Taco 12 Pack" : `${tacosGiven} taco${tacosGiven === 1 ? "" : "s"}`;
       const kingBurrito = message.user === config.kingBurritoId;
       if (userIndex > -1 && userIndex !== senderIndex) {
         const giver = DB.getUser(senderIndex);
@@ -26,11 +27,11 @@ const forTaco = controller => {
           const senderName = DB.getUsername(senderIndex);
           const receiverName = DB.getUsername(userIndex);
           if (!senderName || !receiverName) return;
-          console.log(`${dateStr}: ${senderName} gave ${tacosGiven} taco${tacosGiven === 1 ? "" : "s"} to ${receiverName}`);
-          let msg = `You just received ${tacosGiven} taco${tacosGiven === 1 ? "" : "s"} from <@${senderName}>!`;
+          console.log(`${dateStr}: ${senderName} gave ${tacoMsg} to ${receiverName}`);
+          let msg = `You just received ${tacoMsg} from <@${senderName}>!`;
           bot.say({ text: msg, channel: ids[userIndex] });
           if (!config.silencedUsers.includes(ids[senderIndex])) {
-            let senderMsg = `You just gave ${tacosGiven} taco${tacosGiven === 1 ? "" : "s"} to <@${receiverName}>!`;
+            let senderMsg = `You just gave ${tacoMsg} to <@${receiverName}>!`;
             bot.say({ text: senderMsg, channel: ids[senderIndex] });
           }
           // bot.say(`You just received ${tacosGiven} taco${tacosGiven === 1 ? '': 's'} from ${senderName}!`)
@@ -47,7 +48,7 @@ const forTaco = controller => {
           //   }
           // );
         } else {
-          console.log(`${dateStr}: ${senderName} tried to give ${tacosGiven} taco${tacosGiven === 1 ? "" : "s"} to ${receiverName}, but only had ${giver.left}`);
+          console.log(`${dateStr}: ${senderName} tried to give ${tacoMsg} to ${receiverName}, but only had ${giver.left}`);
           let noTacoMsg = `Sorry <@${message.user}>, you only have ${giver.left} taco${giver.left === 1 ? "" : "s"} remaning and you tried to give *${tacosGiven}*`;
           bot.say({ text: noTacoMsg, channel: ids[senderIndex] });
         }
